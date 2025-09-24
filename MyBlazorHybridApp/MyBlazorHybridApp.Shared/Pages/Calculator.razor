@@ -1,0 +1,61 @@
+﻿@page "/calculator"
+<h3>Calculator</h3>
+
+<h3>Calculator</h3>
+<p>This is a simple calculator page</p>
+
+<label>Number 1 :</label>
+<input type="number" @bind="number1" />
+<br />
+<label>Number 2 :</label>
+<input type="number" @bind="number2" />
+<br />
+
+<label>Operator:</label>
+<select @bind="op">
+    <option value="+">+</option>
+    <option value="-">-</option>
+    <option value="*">*</option>
+    <option value="/">/</option>
+</select>
+
+<button class="btn btn-primary" @onclick="CalculateResult">Calculate</button>
+
+<p>Result : @result</p>
+
+@code {
+    private double number1 = 0;
+    private double number2 = 0;
+    private string op = "+";
+    private double result = 0;
+
+    private void CalculateResult()
+    {
+        switch (op)
+        {
+            case "+":
+                result = number1 + number2;
+                break;
+            case "-":
+                result = number1 - number2;
+                break;
+            case "*":
+                result = number1 * number2;
+                break;
+            case "/":
+                if (number2 != 0)
+                {
+                    result = number1 / number2;
+                }
+                else
+                {
+                    result = double.NaN; // Not a Number
+                }
+                break;
+            default:
+                result = 0;
+                break;
+        }
+    }
+
+}

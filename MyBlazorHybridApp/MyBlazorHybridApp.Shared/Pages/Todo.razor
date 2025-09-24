@@ -1,0 +1,36 @@
+﻿@page "/todo"
+@using MyBlazorHybridApp.Shared.Models
+<h3>Todo (@todos.Count(Todo => !Todo.IsDone))</h3>
+
+<ul>
+    @foreach (var todo in todos)
+    {
+        <li>
+            <input type="checkbox" @bind="todo.IsDone" />
+            <input @bind="todo.Title" />
+        </li>
+    }
+    <input @bind="newTodo" />
+    <button @onclick="AddTodo">Add</button>
+</ul>
+
+@code {
+    string newTodo = "";
+    void AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(newTodo))
+        {
+            todos.Add(new TodoItem { Title = newTodo, IsDone = false });
+            newTodo = string.Empty;
+        }
+    }
+    private List<TodoItem> todos = new List<TodoItem>()
+    {
+        new TodoItem { Title = "Learn Blazor", IsDone = false },
+        new TodoItem { Title = "Build a Blazor app", IsDone = false },
+        new TodoItem { Title = "Deploy the app", IsDone = false },
+        new TodoItem { Title = "Develop Blazor FrontEnd", IsDone = false },
+        new TodoItem { Title = "Develop Blazor MAUI", IsDone = false }
+
+    };
+}
