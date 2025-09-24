@@ -1,0 +1,45 @@
+﻿body {
+}
+
+.pizza-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+    .pizza-cards li {
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        min-height: 200px;
+        color: white;
+        display: flex;
+        align-items: flex-end;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+.pizza-info {
+    background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
+    padding: 15px;
+    width: 100%;
+}
+
+    .pizza-info .title {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .pizza-info .price {
+        display: inline-block;
+        margin-top: 10px;
+        background: green;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
