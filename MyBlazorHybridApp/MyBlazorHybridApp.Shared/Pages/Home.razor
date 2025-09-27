@@ -1,10 +1,19 @@
 ﻿@page "/"
 @using BlazingPizza
+@using MyBlazorHybridApp.Shared.Models 
+@inject HttpClient Http           
+@inject NavigationManager Nav     
+
 
 <div class="main">
     <h1>Blazing Pizzas</h1>
+
     <ul class="pizza-cards">
-        @if (specials != null)
+        @if (specials == null)
+        {
+            <li><em>Loading...</em></li>
+        }
+        else
         {
             @foreach (var special in specials)
             {
@@ -12,7 +21,7 @@
                     <div class="pizza-info">
                         <span class="title">@special.Name</span>
                         @special.Description
-                        <span class="price">@special.GetFormattedBasePrice()</span>
+                        <span class="price">@special.BasePrice.ToString("C")</span>
                     </div>
                 </li>
             }
@@ -20,20 +29,20 @@
     </ul>
 </div>
 
-@code
-{
-    List<PizzaSpecial> specials = new();
+@code {
+    List<PizzaSpecial>? specials;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        specials.AddRange(new List<PizzaSpecial>
+        try
         {
-            new PizzaSpecial { Name = "The Baconatorizor", BasePrice =  11.99M, Description = "It has EVERY kind of bacon", ImageUrl="/img/pizzas/bacon.jpg"},
-            new PizzaSpecial { Name = "Buffalo chicken", BasePrice =  12.75M, Description = "Spicy chicken, hot sauce, and blue cheese, guaranteed to warm you up", ImageUrl="/img/pizzas/meaty.jpg"},
-            new PizzaSpecial { Name = "Veggie Delight", BasePrice =  11.5M, Description = "It's like salad, but on a pizza", ImageUrl="/img/pizzas/salad.jpg"},
-            new PizzaSpecial { Name = "Margherita", BasePrice =  9.99M, Description = "Traditional Italian pizza with tomatoes and basil", ImageUrl="/img/pizzas/margherita.jpg"},
-            new PizzaSpecial { Name = "Basic Cheese Pizza", BasePrice =  11.99M, Description = "It's cheesy and delicious. Why wouldn't you want one?", ImageUrl="/img/pizzas/cheese.jpg"},
-            new PizzaSpecial { Name = "Classic pepperoni", BasePrice =  10.5M, Description = "It's the pizza you grew up with, but Blazing hot!", ImageUrl="/img/pizzas/pepperoni.jpg" }
-        });
+            // Ambil data dari API di Web (Controller SpecialsController)
+            specials = await Http.GetFromJsonAsync<List<PizzaSpecial>>("api/specials");            
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error load data: {ex.Message}");
+            specials = new List<PizzaSpecial>(); // fallback kalau error
+        }
     }
 }

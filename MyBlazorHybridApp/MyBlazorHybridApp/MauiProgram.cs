@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using MyBlazorHybridApp.Services;
 using MyBlazorHybridApp.Shared.Services;
+using Microsoft.Maui.Devices;
+
 
 namespace MyBlazorHybridApp
 {
@@ -9,6 +11,14 @@ namespace MyBlazorHybridApp
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
+            builder.Services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress = new Uri(DeviceInfo.Platform == DevicePlatform.Android
+                    ? "http://10.0.2.2:5173/"
+                    : "http://10.10.10.30:5173/") 
+            });
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -20,6 +30,7 @@ namespace MyBlazorHybridApp
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
 
             builder.Services.AddMauiBlazorWebView();
+
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
